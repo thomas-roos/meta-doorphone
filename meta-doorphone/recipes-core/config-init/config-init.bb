@@ -22,27 +22,25 @@ RDEPENDS:${PN} += "\
     zip \
     "
 
-inherit systemd features_check
-
-REQUIRED_DISTRO_FEATURES = "wifi"
+inherit systemd
 
 SYSTEMD_SERVICE:${PN} += "config-init.service"
 
 do_install() {
     install -d ${D}${bindir}/
-    install -m 0755 ${WORKDIR}/config-init.sh ${D}${bindir}/
+    install -m 0755 ${UNPACKDIR}/config-init.sh ${D}${bindir}/
 
     install -d ${D}${systemd_unitdir}/system
-    install -m 0644 ${WORKDIR}/config-init.service ${D}${systemd_unitdir}/system/
+    install -m 0644 ${UNPACKDIR}/config-init.service ${D}${systemd_unitdir}/system/
     sed -i  -e 's,@BINDIR@,${bindir},g' \
             ${D}${systemd_unitdir}/system/config-init.service
 
     install -d -m 0755 ${D}${sysconfdir}/systemd/network
-    install -m 0644 ${WORKDIR}/wlan.network ${D}${sysconfdir}/systemd/network/
+    install -m 0644 ${UNPACKDIR}/wlan.network ${D}${sysconfdir}/systemd/network/
 
     # Install systemd override for networkd-wait-online
     install -d ${D}${systemd_unitdir}/system/systemd-networkd-wait-online.service.d/
-    install -m 0644 ${WORKDIR}/systemd-networkd-wait-online.service.d-override.conf ${D}${systemd_unitdir}/system/systemd-networkd-wait-online.service.d/override.conf
+    install -m 0644 ${UNPACKDIR}/systemd-networkd-wait-online.service.d-override.conf ${D}${systemd_unitdir}/system/systemd-networkd-wait-online.service.d/override.conf
 
     install -d ${D}${sysconfdir}/wpa_supplicant
 }

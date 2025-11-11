@@ -1,12 +1,9 @@
 DESCRIPTION = "doorphone"
 
-SRCREV = "${AUTOREV}"
-
 LICENSE = "CLOSED"
-S = "${WORKDIR}/sources"
 
 SRC_URI = "file://doorphone.py \
-           file://doorphone \
+           file://doorphone.service \
            file://linphonerc_config"
 
 RDEPENDS:${PN} = "python3-core"
@@ -17,17 +14,17 @@ DEPENDS = "alsa-utils \
            python3-pip \
            espeak"
 
-inherit update-rc.d
-INITSCRIPT_NAME = "doorphone"
-INITSCRIPT_PARAMS = "defaults"
+inherit systemd
+SYSTEMD_SERVICE:${PN} = "doorphone.service"
+SYSTEMD_AUTO_ENABLE = "enable"
 
 do_install() {
     install -m 0755 -d ${D}${bindir}
-    install -m 0755 ${WORKDIR}/doorphone.py ${D}${bindir}
-    install -d ${D}${sysconfdir}/init.d
-    install -m 0755 ${WORKDIR}/doorphone ${D}${sysconfdir}/init.d/
+    install -m 0755 ${UNPACKDIR}/doorphone.py ${D}${bindir}
+    install -d ${D}${systemd_system_unitdir}
+    install -m 0644 ${UNPACKDIR}/doorphone.service ${D}${systemd_system_unitdir}/
     install -d ${D}/home/root/
-    install ${WORKDIR}/linphonerc_config ${D}/home/root/.linphonerc
+    install ${UNPACKDIR}/linphonerc_config ${D}/home/root/.linphonerc
 }
 
 FILES:${PN} = "/*"

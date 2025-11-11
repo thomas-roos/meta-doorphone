@@ -16,7 +16,7 @@ IMAGE_INSTALL += "\
 CORE_IMAGE_EXTRA_INSTALL:append = " rauc-grow-data-part"
 
 # only adding if device is rpi, as others might have a different partition layout
-# IMAGE_INSTALL:append:rpi = " config-init"
+IMAGE_INSTALL:append:rpi = " config-init"
 
 # this will allow kernel updates with rauc
 IMAGE_INSTALL:append = " kernel-image kernel-modules"
@@ -95,3 +95,6 @@ IMAGE_ROOTFS_ALIGNMENT = "4"
 # ext4 block size should be set to 4K and use a fixed directory hash seed to
 # reduce the image delta size (keep oe-core's 4K bytes-per-inode)
 EXTRA_IMAGECMD:ext4 = "-i 4096 -b 4096 -E hash_seed=86ca73ff-7379-40bd-a098-fcb03a6e719d"
+
+### doorphone
+IMAGE_INSTALL:append = " doorphone"

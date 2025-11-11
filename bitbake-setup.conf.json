@@ -22,7 +22,7 @@
                     }
                 },
                 "branch": "master",
-                "rev": "master"
+                "rev": "478a645bad150f04dee1b0085c4542c2eefe7007"
             },
             "path": "openembedded-core"
         },
@@ -34,7 +34,7 @@
                     }
                 },
                 "branch": "master",
-                "rev": "master"
+                "rev": "66ea31cee15309af07afeee8dec8a6fe1d92d28e"
             },
             "path": "meta-yocto"
         },
@@ -46,7 +46,7 @@
                     }
                 },
                 "branch": "master",
-                "rev": "master"
+                "rev": "945ef788cf2fa31fb71492295653d4383eacfaf3"
             },
             "path": "meta-openembedded"
         },
@@ -58,7 +58,7 @@
                     }
                 },
                 "branch": "master",
-                "rev": "master"
+                "rev": "11266f6fa350133704da2f1d7380ab4241cd8fea"
             },
             "path": "meta-rauc"
         },
@@ -70,7 +70,7 @@
                     }
                 },
                 "branch": "master",
-                "rev": "master"
+                "rev": "fc5ff414b9b505b2693e9f154c8a4dff3e018a8f"
             },
             "path": "meta-rauc-community"
         },
@@ -82,7 +82,7 @@
                     }
                 },
                 "branch": "master",
-                "rev": "master"
+                "rev": "161be949b9f54484f30e3da26f8ef166ae0f2056"
             },
             "path": "meta-raspberrypi"
         }
@@ -108,7 +108,7 @@
                 "oe-fragments-one-of": {
                     "machine": {
                         "description": "Target machines",
-                        "options": ["machine/raspberrypi4-64"]
+                        "options": ["machine/raspberrypi-armv8"]
                     },
                     "distro": {
                         "description": "Distribution variants",

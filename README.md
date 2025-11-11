@@ -21,55 +21,25 @@ git submodule update --init --recursive
 2. Initialize the build environment:
 ```bash
 cd bitbake/bin/ && \
-./bitbake-setup --setting default top-dir-prefix $PWD/../ init \
+./bitbake-setup --setting default top-dir-prefix $PWD/../../ init \
   $PWD/../../bitbake-setup.conf.json \
-  doorphone machine/raspberrypi4-64 distro/poky-altcfg doorphone/doorphone/doorphone --non-interactive && \
+  doorphone machine/raspberrypi-armv8 distro/poky-altcfg doorphone/doorphone/doorphone --non-interactive && \
   cd -
 ```
 
 3. Source the build environment:
 ```bash
-. ./bitbake-builds/bitbake-setup-doorphone-distro_poky-altcfg-machine_raspberrypi4-64/build/init-build-env
+. ./bitbake-builds/bitbake-setup-doorphone-distro_poky-altcfg-doorphone_doorphone_doorphone-machine_raspberrypi-armv8/build/init-build-env
 ```
 
 4. Build the image:
 ```bash
-bitbake core-image-minimal
+bitbake doorphone-image
 ```
-
-### Available Distros
-
-- `distro/poky` - Poky distribution
-- `distro/poky-altcfg` - Poky with alternative configuration
-
-The configuration includes CDN sstate mirror acceleration for faster builds.
-
-steps to get started for me (borrored from: <https://jumpnowtek.com/rpi/Raspberry-Pi-4-64bit-Systems-with-Yocto.html>):
-
-bitbake console:
-
-    bitbake console-image
-
-different console:
-
-    sudo su
-
-    export MACHINE=raspberrypi4-64
-
-    export OETMP=/home/tro/yocto/build/tmp
-
-
-    once: cd /home/tro/yocto/poky/meta-rpi64/scripts/
-		 sudo ./mk2parts.sh sde
-          sudo mkdir /media/card
-
-    /home/tro/yocto/poky/meta-rpi64/scripts/copy_boot.sh sde
-
-    /home/tro/yocto/poky/meta-rpi64/scripts/copy_rootfs.sh sde console
 
 work:
 
-root pwd: toor
+root pwd:s
 
 /boot partition edit config.txt
 	start_x=1

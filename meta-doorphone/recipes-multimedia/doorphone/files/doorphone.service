@@ -1,0 +1,14 @@
+[Unit]
+Description=Doorphone Service
+After=network.target sound.target
+
+[Service]
+Type=simple
+ExecStartPre=/usr/sbin/alsactl restore
+ExecStart=/usr/bin/doorphone.py
+ExecStopPost=/usr/sbin/alsactl store
+ExecStopPost=/usr/bin/killall linphonec
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
