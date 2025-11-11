@@ -64,7 +64,8 @@
                     "meta-raspberrypi"
                 ],
                 "bb-layers-file-relative": [
-                    "."
+                    "meta-doorphone",
+                    "bitbake"
                 ],
                 "oe-fragments-one-of": {
                     "machine": {
