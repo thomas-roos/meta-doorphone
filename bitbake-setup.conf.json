@@ -90,7 +90,7 @@
           "meta-raspberrypi",
           "meta-doorphone"
         ],
-        "oe-fragments-one-of": {
+        "oe-fragments": ["core/yocto/sstate-mirror-cdn"],
           "machine": {
             "description": "Machine",
             "options": [
