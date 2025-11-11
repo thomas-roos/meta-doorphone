@@ -7,13 +7,13 @@ Currently used in a build-farm for the following boards
 This layer depends on:
 
     URI: git://git.yoctoproject.org/poky.git
-    branch: dunfell 
+    branch: scarthgap 
 
     URI: git://git.openembedded.org/meta-openembedded
-    branch: dunfell 
+    branch: scarthgap 
 
     URI: git://git.yoctoproject.org/meta-security.git
-    branch: dunfell 
+    branch: scarthgap 
 
 
 meta-tro layer maintainer: Thomas Roos <thomas@roosesweb.de>

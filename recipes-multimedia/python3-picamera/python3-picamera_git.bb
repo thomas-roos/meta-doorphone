@@ -14,6 +14,6 @@ SRC_URI = " \
 
 S="${WORKDIR}/git"
 
-do_install_prepend() {
+do_install:prepend() {
     export READTHEDOCS=True
 }
