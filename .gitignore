@@ -1,5 +1,4 @@
 # Bitbake build directories
-bitbake/
 bitbake-builds/
 build/
 tmp/

@@ -8,16 +8,27 @@ meta-tro layer maintainer: Thomas Roos <thomas@roosesweb.de>
 
 ### Quick Start
 
-1. Clone bitbake:
+1. Clone with submodules:
 ```bash
-git clone https://git.openembedded.org/bitbake
-cd bitbake
+git clone --recurse-submodules https://github.com/thomas-roos/meta-doorphone
+```
+
+Or if already cloned:
+```bash
+git submodule update --init --recursive
 ```
 
 2. Initialize the build environment:
 ```bash
+./bitbake/bin/bitbake-setup --setting default top-dir-prefix $PWD init \
+  $PWD/bitbake-setup.conf.json \
+  doorphone machine/raspberrypi4-64 distro/poky-altcfg --non-interactive
+```
+
+Or directly from GitHub:
+```bash
 ./bin/bitbake-setup --setting default top-dir-prefix $PWD init \
-  /path/to/meta-doorphone/bitbake-setup.conf.json \
+  https://raw.githubusercontent.com/user/meta-doorphone/master/bitbake-setup.conf.json \
   doorphone machine/raspberrypi4-64 distro/poky-altcfg --non-interactive
 ```
 
