@@ -91,6 +91,7 @@
           "meta-doorphone"
         ],
         "oe-fragments": ["core/yocto/sstate-mirror-cdn"],
+        "oe-fragments-one-of": {
           "machine": {
             "description": "Machine",
             "options": [
