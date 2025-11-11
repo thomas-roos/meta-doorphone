@@ -105,18 +105,11 @@
                 "bb-layers-file-relative": [
                     "meta-doorphone"
                 ],
+				"oe-fragments": ["machine/raspberrypi-armv8", "doorphone/doorphone"],
                 "oe-fragments-one-of": {
-                    "machine": {
-                        "description": "Target machines",
-                        "options": ["machine/raspberrypi-armv8"]
-                    },
                     "distro": {
                         "description": "Distribution variants",
                         "options": ["distro/poky", "distro/poky-altcfg"]
-                    },
-                    "doorphone": {
-                        "description": "Doorphone configuration",
-                        "options": ["doorphone/doorphone/doorphone"]
                     }
                 }
             }
