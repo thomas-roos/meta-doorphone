@@ -38,6 +38,18 @@
       },
       "path": "meta-openembedded"
     },
+    "meta-yocto": {
+      "git-remote": {
+        "remotes": {
+          "origin": {
+            "uri": "git://git.yoctoproject.org/meta-yocto;protocol=https"
+          }
+        },
+        "branch": "master",
+        "rev": "master"
+      },
+      "path": "meta-yocto"
+    },
     "meta-raspberrypi": {
       "git-remote": {
         "remotes": {
@@ -71,6 +83,8 @@
         "oe-template": "meta-default",
         "bb-layers": [
           "openembedded-core/meta",
+          "meta-yocto/meta-yocto-bsp",
+          "meta-yocto/meta-poky",
           "meta-openembedded/meta-oe",
           "meta-openembedded/meta-python",
           "meta-raspberrypi",
@@ -81,6 +95,12 @@
             "description": "Machine",
             "options": [
               "machine/raspberrypi4-64"
+            ]
+          },
+          "distro": {
+            "description": "Distribution",
+            "options": [
+              "distro/poky"
             ]
           }
         }
