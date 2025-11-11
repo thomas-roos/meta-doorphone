@@ -38,6 +38,13 @@ cd bitbake
   doorphone machine/raspberrypi4-64 distro/poky-altcfg --non-interactive
 ```
 
+Or directly from GitHub:
+```bash
+./bin/bitbake-setup --setting default top-dir-prefix $PWD init \
+  https://raw.githubusercontent.com/user/meta-doorphone/master/bitbake-setup.conf.json \
+  doorphone machine/raspberrypi4-64 distro/poky-altcfg --non-interactive
+```
+
 3. Source the build environment:
 ```bash
 . ./bitbake-builds/bitbake-setup-doorphone-distro_poky-altcfg-machine_raspberrypi4-64/build/init-build-env
