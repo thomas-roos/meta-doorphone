@@ -101,7 +101,8 @@
           "distro": {
             "description": "Distribution",
             "options": [
-              "distro/poky"
+              "distro/poky",
+              "distro/poky-altcfg"
             ]
           }
         }
