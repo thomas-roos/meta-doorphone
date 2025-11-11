@@ -20,23 +20,11 @@ git submodule update --init --recursive
 
 2. Initialize the build environment:
 ```bash
-./bitbake/bin/bitbake-setup --setting default top-dir-prefix $PWD init \
-  $PWD/bitbake-setup.conf.json \
-  doorphone machine/raspberrypi4-64 distro/poky-altcfg --non-interactive
-```
-
-Or directly from GitHub:
-```bash
-./bin/bitbake-setup --setting default top-dir-prefix $PWD init \
-  https://raw.githubusercontent.com/user/meta-doorphone/master/bitbake-setup.conf.json \
-  doorphone machine/raspberrypi4-64 distro/poky-altcfg --non-interactive
-```
-
-Or directly from GitHub:
-```bash
-./bin/bitbake-setup --setting default top-dir-prefix $PWD init \
-  https://raw.githubusercontent.com/user/meta-doorphone/master/bitbake-setup.conf.json \
-  doorphone machine/raspberrypi4-64 distro/poky-altcfg --non-interactive
+cd bitbake/bin/ && \
+./bitbake-setup --setting default top-dir-prefix $PWD/../ init \
+  $PWD/../../bitbake-setup.conf.json \
+  doorphone machine/raspberrypi4-64 distro/poky-altcfg --non-interactive && \
+  cd -
 ```
 
 3. Source the build environment:
