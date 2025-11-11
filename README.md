@@ -7,16 +7,53 @@ Currently used in a build-farm for the following boards
 This layer depends on:
 
     URI: git://git.yoctoproject.org/poky.git
-    branch: scarthgap 
+    branch: master
 
     URI: git://git.openembedded.org/meta-openembedded
-    branch: scarthgap 
+    branch: master
 
-    URI: git://git.yoctoproject.org/meta-security.git
-    branch: scarthgap 
+    URI: git://git.yoctoproject.org/meta-yocto.git
+    branch: master
+
+    URI: git://git.yoctoproject.org/meta-raspberrypi.git
+    branch: master
 
 
 meta-tro layer maintainer: Thomas Roos <thomas@roosesweb.de>
+
+## Building with bitbake-setup
+
+### Quick Start
+
+1. Clone bitbake:
+```bash
+git clone https://git.openembedded.org/bitbake
+cd bitbake
+```
+
+2. Initialize the build environment:
+```bash
+./bin/bitbake-setup --setting default top-dir-prefix $PWD init \
+  /path/to/meta-doorphone/bitbake-setup.conf.json \
+  doorphone machine/raspberrypi4-64 distro/poky-altcfg --non-interactive
+```
+
+3. Source the build environment:
+```bash
+. ./bitbake-builds/bitbake-setup-doorphone-distro_poky-altcfg-machine_raspberrypi4-64/build/init-build-env
+```
+
+4. Build the image:
+```bash
+bitbake core-image-minimal
+```
+
+### Available Distros
+
+- `distro/poky` - Poky distribution
+- `distro/poky-altcfg` - Poky with alternative configuration
+
+The configuration includes CDN sstate mirror acceleration for faster builds.
 
 steps to get started for me (borrored from: <https://jumpnowtek.com/rpi/Raspberry-Pi-4-64bit-Systems-with-Yocto.html>):
 
