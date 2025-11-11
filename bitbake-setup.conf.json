@@ -50,6 +50,30 @@
             },
             "path": "meta-openembedded"
         },
+        "meta-rauc": {
+            "git-remote": {
+                "remotes": {
+                    "origin": {
+                        "uri": "git://github.com/rauc/meta-rauc;protocol=https"
+                    }
+                },
+                "branch": "master",
+                "rev": "master"
+            },
+            "path": "meta-rauc"
+        },
+        "meta-rauc-community": {
+            "git-remote": {
+                "remotes": {
+                    "origin": {
+                        "uri": "git://github.com/rauc/meta-rauc-community;protocol=https"
+                    }
+                },
+                "branch": "master",
+                "rev": "master"
+            },
+            "path": "meta-rauc-community"
+        },
         "meta-raspberrypi": {
             "git-remote": {
                 "remotes": {
@@ -74,6 +98,8 @@
                     "meta-openembedded/meta-oe",
                     "meta-openembedded/meta-python",
                     "meta-openembedded/meta-multimedia",
+                    "meta-rauc",
+                    "meta-rauc-community/meta-rauc-raspberrypi",
                     "meta-raspberrypi"
                 ],
                 "bb-layers-file-relative": [
@@ -87,6 +113,10 @@
                     "distro": {
                         "description": "Distribution variants",
                         "options": ["distro/poky", "distro/poky-altcfg"]
+                    },
+                    "doorphone": {
+                        "description": "Doorphone configuration",
+                        "options": ["doorphone/doorphone"]
                     }
                 }
             }
