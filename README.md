@@ -29,7 +29,7 @@ cd bitbake/bin/ && \
 
 3. Source the build environment:
 ```bash
-. ./bitbake-builds/bitbake-setup-doorphone-distro_poky-altcfg-doorphone_doorphone_doorphone-machine_raspberrypi-armv8/build/init-build-env
+. ./bitbake-builds/bitbake-setup-doorphone-distro_poky-altcfg/build/init-build-env
 ```
 
 4. Build the image:
