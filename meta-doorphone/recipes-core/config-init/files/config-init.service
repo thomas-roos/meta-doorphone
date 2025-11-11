@@ -1,0 +1,12 @@
+[Unit]
+Description=config init service
+After=tmp.mount
+Before=doorphone.service wpa_supplicant@wlan0.service avahi-daemon.service systemd-networkd.service
+
+[Service]
+Type=oneshot
+ExecStart=@BINDIR@/config-init.sh
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target

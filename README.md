@@ -23,7 +23,7 @@ git submodule update --init --recursive
 cd bitbake/bin/ && \
 ./bitbake-setup --setting default top-dir-prefix $PWD/../ init \
   $PWD/../../bitbake-setup.conf.json \
-  doorphone machine/raspberrypi4-64 distro/poky-altcfg --non-interactive && \
+  doorphone machine/raspberrypi4-64 distro/poky-altcfg doorphone/doorphone/doorphone --non-interactive && \
   cd -
 ```
 

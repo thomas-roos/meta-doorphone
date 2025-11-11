@@ -16,7 +16,7 @@ IMAGE_INSTALL += "\
 CORE_IMAGE_EXTRA_INSTALL:append = " rauc-grow-data-part"
 
 # only adding if device is rpi, as others might have a different partition layout
-IMAGE_INSTALL:append:rpi = " greengrass-config-init"
+# IMAGE_INSTALL:append:rpi = " config-init"
 
 # this will allow kernel updates with rauc
 IMAGE_INSTALL:append = " kernel-image kernel-modules"
@@ -40,7 +40,7 @@ COPY_LIC_DIRS = "1"
 
 IMAGE_FEATURES += "read-only-rootfs"
 
-# this should be equal to sdimage-aws-iot-greengrass-lite-demo-ab_partition.wks.in file,
+# this should be equal to sdimage-doorphone-ab_partition.wks.in file,
 # for rauc bundle generation wic file is not used!
 ROOTFS_POSTPROCESS_COMMAND += "rootfs_user_fstab"
 
@@ -82,13 +82,11 @@ fi
 install -d ${IMAGE_ROOTFS}/${sysconfdir}/systemd/system/multi-user.target.wants/
 ln -sf /${libdir}/systemd/system/wpa_supplicant@.service ${IMAGE_ROOTFS}/${sysconfdir}/systemd/system/multi-user.target.wants/wpa_supplicant@wlan0.service
 
-# enable systemd-time-wait-sync as this is important for greengrass to have a correct clock
+# enable systemd-time-wait-sync as this is important to have a correct clock
 ln -sf /${libdir}/systemd/system/systemd-time-wait-sync.service ${IMAGE_ROOTFS}/${sysconfdir}/systemd/system/multi-user.target.wants/
 
 install -d ${IMAGE_ROOTFS}/data/home
 }
-
-IMAGE_INSTALL:append = " aws-cli"
 
 # Optimizations for RAUC adaptive method 'block-hash-index'
 # rootfs image size must to be 4K-aligned
@@ -97,6 +95,3 @@ IMAGE_ROOTFS_ALIGNMENT = "4"
 # ext4 block size should be set to 4K and use a fixed directory hash seed to
 # reduce the image delta size (keep oe-core's 4K bytes-per-inode)
 EXTRA_IMAGECMD:ext4 = "-i 4096 -b 4096 -E hash_seed=86ca73ff-7379-40bd-a098-fcb03a6e719d"
-
-# disable fleetprovisioning (default on)
-PACKAGECONFIG:pn-greengrass-lite = ""
