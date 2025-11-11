@@ -3,7 +3,7 @@ DESCRIPTION = "doorphone"
 SRCREV = "${AUTOREV}"
 
 LICENSE = "CLOSED"
-S = "${WORKDIR}"
+S = "${WORKDIR}/sources"
 
 SRC_URI = "file://doorphone.py \
            file://doorphone \
@@ -23,11 +23,11 @@ INITSCRIPT_PARAMS = "defaults"
 
 do_install() {
     install -m 0755 -d ${D}${bindir}
-    install -m 0755 ${S}/doorphone.py ${D}${bindir}
+    install -m 0755 ${WORKDIR}/doorphone.py ${D}${bindir}
     install -d ${D}${sysconfdir}/init.d
-    install -m 0755 ${S}/doorphone ${D}${sysconfdir}/init.d/
+    install -m 0755 ${WORKDIR}/doorphone ${D}${sysconfdir}/init.d/
     install -d ${D}/home/root/
-    install ${S}/linphonerc_config ${D}/home/root/.linphonerc
+    install ${WORKDIR}/linphonerc_config ${D}/home/root/.linphonerc
 }
 
 FILES:${PN} = "/*"

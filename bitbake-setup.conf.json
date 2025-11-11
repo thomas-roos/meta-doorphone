@@ -1,0 +1,90 @@
+{
+  "version": "1.0",
+  "description": "Doorphone SIP-based system for Raspberry Pi 4 64-bit",
+  "sources": {
+    "bitbake": {
+      "git-remote": {
+        "remotes": {
+          "origin": {
+            "uri": "git://git.openembedded.org/bitbake;protocol=https"
+          }
+        },
+        "branch": "master",
+        "rev": "master"
+      },
+      "path": "bitbake"
+    },
+    "openembedded-core": {
+      "git-remote": {
+        "remotes": {
+          "origin": {
+            "uri": "git://git.openembedded.org/openembedded-core;protocol=https"
+          }
+        },
+        "branch": "master",
+        "rev": "master"
+      },
+      "path": "openembedded-core"
+    },
+    "meta-openembedded": {
+      "git-remote": {
+        "remotes": {
+          "origin": {
+            "uri": "git://git.openembedded.org/meta-openembedded;protocol=https"
+          }
+        },
+        "branch": "master",
+        "rev": "master"
+      },
+      "path": "meta-openembedded"
+    },
+    "meta-raspberrypi": {
+      "git-remote": {
+        "remotes": {
+          "origin": {
+            "uri": "git://git.yoctoproject.org/meta-raspberrypi;protocol=https"
+          }
+        },
+        "branch": "master",
+        "rev": "master"
+      },
+      "path": "meta-raspberrypi"
+    },
+    "meta-doorphone": {
+      "git-remote": {
+        "remotes": {
+          "origin": {
+            "uri": "file:///home/ubuntu/data/meta-doorphone"
+          }
+        },
+        "branch": "master",
+        "rev": "master"
+      },
+      "path": "meta-doorphone"
+    }
+  },
+  "bitbake-setup": {
+    "configurations": [
+      {
+        "name": "doorphone",
+        "description": "Doorphone SIP system for Raspberry Pi 4 64-bit",
+        "oe-template": "meta-default",
+        "bb-layers": [
+          "openembedded-core/meta",
+          "meta-openembedded/meta-oe",
+          "meta-openembedded/meta-python",
+          "meta-raspberrypi",
+          "meta-doorphone"
+        ],
+        "oe-fragments-one-of": {
+          "machine": {
+            "description": "Machine",
+            "options": [
+              "machine/raspberrypi4-64"
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

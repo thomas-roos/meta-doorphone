@@ -9,10 +9,10 @@ inherit pypi setuptools3
 
 SRCREV = "e18d70989eb6c3bf19f4cea859c7401bea3b9048"
 SRC_URI = " \
-    git://git@github.com/waveform80/picamera.git;protocol=https \
+    git://github.com/waveform80/picamera.git;protocol=https;branch=master \
 "
 
-S="${WORKDIR}/git"
+S = "${WORKDIR}/git"
 
 do_install:prepend() {
     export READTHEDOCS=True
