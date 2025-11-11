@@ -1,0 +1,15 @@
+auto lo
+iface lo inet loopback
+
+auto eth0
+# iface eth0 inet dhcp
+
+allow-hotplug eth0
+iface eth0 inet static
+    address 192.168.0.33/24
+    gateway 192.168.0.1
+
+#auto wlan0
+iface wlan0 inet dhcp
+        wireless_mode managed
+        wpa-conf /etc/wpa_supplicant.conf

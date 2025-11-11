@@ -1,0 +1,27 @@
+# Bitbake build directories
+bitbake/
+bitbake-builds/
+build/
+tmp/
+sstate-cache/
+downloads/
+cache/
+
+# Bitbake logs
+*.log
+bitbake-cookerdaemon.log
+
+# Build artifacts
+*.rootfs.*
+*.wic
+*.img
+*.tar.*
+
+# Editor files
+*~
+.*.swp
+.*.swo
+
+# OS files
+.DS_Store
+Thumbs.db

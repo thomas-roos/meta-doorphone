@@ -1,0 +1,16 @@
+FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
+
+SRC_URI += "file://linphonerc_config"
+
+
+do_install_append () {
+	install -d ${D}/home/root/
+	cp ../linphonerc_config ${D}/home/root/.linphonerc
+}
+
+FILES_linphonec = "${bindir}/linphonec \
+		${bindir}/linphonecsh \
+		/home/root/.linphonerc \
+		${datadir}/sounds/linphone/ringback.wav \
+		${datadir}/sounds/linphone/rings/oldphone-mono.wav"
+		

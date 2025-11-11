@@ -1,0 +1,27 @@
+#!/bin/sh
+
+case "$1" in
+    start)
+    	alsactl restore
+        echo "Starting doorphone"
+		start-stop-daemon -m --start /usr/bin/doorphone.py --pidfile /var/lock/doorphone.pid
+        ;;
+
+    stop)
+    	alsactl store
+        echo "Stopping doorphone"
+		start-stop-daemon --stop --pidfile /var/lock/doorphone.pid
+		killall linphonec
+        ;;
+
+    restart)
+        echo "Restarting doorphone"
+        stop
+        start
+        ;;
+
+    *)
+        echo "Usage: doorphone { start | stop | restart }"
+        ;;
+esac
+
