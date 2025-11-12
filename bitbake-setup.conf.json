@@ -85,6 +85,18 @@
                 "rev": "161be949b9f54484f30e3da26f8ef166ae0f2056"
             },
             "path": "meta-raspberrypi"
+        },
+        "meta-bc": {
+            "git-remote": {
+                "remotes": {
+                    "origin": {
+                        "uri": "https://github.com/thomas-roos/meta-bc.git"
+                    }
+                },
+                "branch": "master",
+                "rev": "master"
+            },
+            "path": "meta-bc"
         }
     },
     "bitbake-setup": {
