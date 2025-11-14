@@ -5,7 +5,7 @@ SRC_URI += "file://linphonerc_config"
 
 do_install:append () {
 	install -d ${D}/home/root/
-	cp ../linphonerc_config ${D}/home/root/.linphonerc
+	install -m 0644 ${UNPACKDIR}/linphonerc_config ${D}/home/root/.linphonerc
 }
 
-FILES:linphonec += "/home/root/.linphonerc"
+FILES:${PN}c += " /home/root/.linphonerc"
