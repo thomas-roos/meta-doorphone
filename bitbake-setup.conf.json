@@ -122,15 +122,18 @@
                     "meta-openembedded/meta-oe",
                     "meta-openembedded/meta-python",
                     "meta-openembedded/meta-multimedia",
+                    "meta-openembedded/meta-networking",
+                    "meta-openembedded/meta-filesystems",
                     "meta-rauc",
                     "meta-rauc-community/meta-rauc-raspberrypi",
                     "meta-raspberrypi",
-                    "meta-aws"
+                    "meta-aws",
+                    "meta-bc"
                 ],
                 "bb-layers-file-relative": [
                     "meta-doorphone"
                 ],
-				"oe-fragments": ["machine/raspberrypi-armv8", "doorphone/doorphone"],
+				"oe-fragments": ["core/yocto/sstate-mirror-cdn", "machine/raspberrypi-armv8", "doorphone/doorphone"],
                 "oe-fragments-one-of": {
                     "distro": {
                         "description": "Distribution variants",

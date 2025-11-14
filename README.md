@@ -21,9 +21,9 @@ git submodule update --init --recursive
 2. Initialize the build environment:
 ```bash
 cd bitbake/bin/ && \
-./bitbake-setup init \
+./bitbake-setup --setting default top-dir-prefix $PWD/../../ init \
   $PWD/../../bitbake-setup.conf.json \
-  doorphone distro/poky-altcfg --non-interactive && \
+  doorphone distro/poky-altcfg core/yocto/sstate-mirror-cdn --non-interactive && \
   cd -
 ```
 
