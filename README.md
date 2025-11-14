@@ -1,9 +1,5 @@
 A meta-layer to build a sip based doorphone for Rasperry Pi 64
 
-
-
-meta-tro layer maintainer: Thomas Roos <thomas@roosesweb.de>
-
 ## Building with bitbake-setup
 
 ### Quick Start
@@ -36,6 +32,8 @@ cd bitbake/bin/ && \
 ```bash
 bitbake doorphone-image
 ```
+
+##TODO?
 
 work:
 
