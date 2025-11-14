@@ -3,7 +3,7 @@ playback_dev_id=ALSA Unknown: default
 ringer_dev_id=ALSA Unknown: default
 capture_dev_id=ALSA Unknown: default
 media_dev_id=ALSA Unknown: default
-remote_ring=/usr/share/sounds/linphone/ringback.wav
+remote_ring=/opt/belledonne-communications/share/sounds/linphone/ringback.wav
 playback_gain_db=0.000000
 mic_gain_db=0.000000
 disable_record_on_mute=0
@@ -22,7 +22,7 @@ mtu=1300
 ref=-JhD1ijT27xUUcZ
 
 [sip]
-root_ca=/usr/share/linphone/rootca.pem
+root_ca=/opt/belledonne-communications/share/linphone/rootca.pem
 verify_server_certs=1
 verify_server_cn=1
 contact=sip:root@unknown-host
@@ -124,5 +124,3 @@ mime=L16
 rate=44100
 channels=1
 enabled=0
-
-
