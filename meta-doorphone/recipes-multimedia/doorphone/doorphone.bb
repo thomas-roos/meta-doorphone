@@ -6,7 +6,7 @@ SRC_URI = "file://doorphone.py \
            file://doorphone.service \
            file://linphonerc_config"
 
-RDEPENDS:${PN} = "python3-core"
+RDEPENDS:${PN} = "python3-core linphone"
 
 # linphonec not available in scarthgap, needs separate recipe
 DEPENDS = "alsa-utils \

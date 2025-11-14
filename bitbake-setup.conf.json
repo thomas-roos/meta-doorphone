@@ -97,6 +97,18 @@
                 "rev": "master"
             },
             "path": "meta-bc"
+        },
+        "meta-aws": {
+            "git-remote": {
+                "remotes": {
+                    "origin": {
+                        "uri": "https://github.com/aws4embeddedlinux/meta-aws.git"
+                    }
+                },
+                "branch": "master",
+                "rev": "master"
+            },
+            "path": "meta-aws"
         }
     },
     "bitbake-setup": {
@@ -112,7 +124,8 @@
                     "meta-openembedded/meta-multimedia",
                     "meta-rauc",
                     "meta-rauc-community/meta-rauc-raspberrypi",
-                    "meta-raspberrypi"
+                    "meta-raspberrypi",
+                    "meta-aws"
                 ],
                 "bb-layers-file-relative": [
                     "meta-doorphone"
