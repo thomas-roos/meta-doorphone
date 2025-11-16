@@ -3,7 +3,6 @@
 import gpiod
 import os
 import time
-from gpiod.line import Edge
 
 def button_callback():
     print("Button was pushed!")
@@ -11,27 +10,55 @@ def button_callback():
     time.sleep(1.0)
     os.system("linphonecsh dial 1234")
 
-# Setup GPIO using gpiod
-chip = gpiod.Chip('/dev/gpiochip0')
-line = chip.get_line(17)  # GPIO17 (physical pin 11)
-line.request(consumer="doorphone", type=gpiod.LINE_REQ_EV_RISING_EDGE, flags=gpiod.LINE_REQ_FLAG_BIAS_PULL_DOWN)
+# Setup GPIO using gpiod v2 API
+print("Setting up GPIO22 (Pin 15)...")
+request = gpiod.request_lines(
+    "/dev/gpiochip0",
+    consumer="doorphone",
+    config={
+        22: gpiod.LineSettings(
+            direction=gpiod.line.Direction.INPUT,
+            edge_detection=gpiod.line.Edge.RISING,
+            bias=gpiod.line.Bias.PULL_DOWN
+        )
+    }
+)
+print("GPIO22 configured successfully")
 
-os.system("linphonecsh init -C -d 6 -l /var/log/linphone.log -c /home/root/.linphonerc --real-early-media && sleep 3")
+print("Starting linphonecsh daemon...")
+os.system("linphonecsh init -V -c /var/lib/linphone/.linphonerc -d 6 -l /var/log/linphone.log")
+time.sleep(5)
+print("Configuring network...")
+os.system('''linphonecsh generic "ipv6 disable" ''')
+print("Configuring audio codecs...")
+os.system('''linphonecsh generic "codec enable opus/48000/1" ''')
+os.system('''linphonecsh generic "codec enable opus/48000/2" ''')
+print("Configuring audio...")
+os.system('''linphonecsh generic "soundcard show" ''')
 os.system('''linphonecsh generic "ec on 200 150 128" ''')
 os.system('''linphonecsh generic "el on" ''')
-os.system("linphonecsh register --host 192.168.0.22 --username 1104   --password 1104")
+os.system('''linphonecsh generic "ec show" ''')
+print("Configuring video...")
+os.system('''linphonecsh generic "camera on" ''')
+print("Registering SIP account...")
+os.system("linphonecsh register --host 192.168.0.22 --username 1104 --password 1104")
+time.sleep(2)
 
-print("Doorphone ready. Press Ctrl+C to quit")
+print("Doorphone ready. Press button or Ctrl+C to quit")
 
 try:
     while True:
-        if line.event_wait(sec=1):
-            event = line.event_read()
-            if event.type == gpiod.LineEvent.RISING_EDGE:
+        print(".", end="", flush=True)
+        if request.wait_edge_events(timeout=1.0):
+            print("\nGPIO event detected!")
+            events = request.read_edge_events()
+            for event in events:
+                print(f"Event type: {event.event_type}")
                 button_callback()
+                time.sleep(5)  # Debounce - wait 5 seconds before accepting next press
 except KeyboardInterrupt:
     print("\nExiting...")
 finally:
-    line.release()
+    request.release()
     os.system("linphonecsh hangup")
     os.system("linphonecsh exit")

@@ -46,6 +46,9 @@ ROOTFS_POSTPROCESS_COMMAND += "rootfs_user_fstab"
 
 rootfs_user_fstab () {
 
+# Set hostname
+echo "doorphone" > ${IMAGE_ROOTFS}/${sysconfdir}/hostname
+
 # overwrite the default fstab, adding customization for this image
 cat << EOF > ${IMAGE_ROOTFS}/${sysconfdir}/fstab
 /dev/root            /                    auto       defaults              1  1
@@ -58,7 +61,8 @@ LABEL=data     /data     ext4    x-systemd.growfs        0       0
 /data/etc/wpa_supplicant             /etc/wpa_supplicant             none    bind            0       0
 /data/etc/systemd/network            /etc/systemd/network            none    bind            0       0
 /data/etc/systemd/system            /etc/systemd/system            none    bind            0       0
-/data/home      /home      none    bind            0       0
+/data/var/lib/linphone      /var/lib/linphone      none    bind            0       0
+/data/var/lib/alsa      /var/lib/alsa      none    bind            0       0
 EOF
 
 install -d -m 0755 ${IMAGE_ROOTFS}/data
@@ -85,7 +89,17 @@ ln -sf /${libdir}/systemd/system/wpa_supplicant@.service ${IMAGE_ROOTFS}/${sysco
 # enable systemd-time-wait-sync as this is important to have a correct clock
 ln -sf /${libdir}/systemd/system/systemd-time-wait-sync.service ${IMAGE_ROOTFS}/${sysconfdir}/systemd/system/multi-user.target.wants/
 
-install -d ${IMAGE_ROOTFS}/data/home
+mkdir -p ${IMAGE_ROOTFS}/data/var/lib/linphone
+if [ -n "$(ls -A ${IMAGE_ROOTFS}/var/lib/linphone 2>/dev/null)" ]; then
+    mv -f ${IMAGE_ROOTFS}/var/lib/linphone ${IMAGE_ROOTFS}/data/var/lib/
+    install -d ${IMAGE_ROOTFS}/var/lib/linphone
+fi
+
+mkdir -p ${IMAGE_ROOTFS}/data/var/lib/alsa
+if [ -n "$(ls -A ${IMAGE_ROOTFS}/var/lib/alsa 2>/dev/null)" ]; then
+    mv -f ${IMAGE_ROOTFS}/var/lib/alsa ${IMAGE_ROOTFS}/data/var/lib/
+    install -d ${IMAGE_ROOTFS}/var/lib/alsa
+fi
 }
 
 # Optimizations for RAUC adaptive method 'block-hash-index'

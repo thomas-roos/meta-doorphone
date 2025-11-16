@@ -80,7 +80,7 @@ This architecture allows multiple devices to receive doorbell calls and any auth
 ```
 
 **Key Components:**
-- **GPIO Pin 11**: Physical button input (RISING edge = button press)
+- **GPIO Pin 15**: Physical button input (RISING edge = button press)
 - **Linphone**: SIP client for VoIP calls
 - **Button action**: Hangup → Dial extension 1234
 - **SIP registration**: Extension 1104 on local PBX (192.168.0.22)
@@ -104,12 +104,14 @@ Raspberry Pi GPIO Header (Physical Pin Layout)
 │  5  │  GPIO3   │   GND    │  6  │ ◄── Connect button here (GND)
 │  7  │  GPIO4   │  GPIO14  │  8  │
 │  9  │  GND     │  GPIO15  │ 10  │
-│ 11  │  GPIO17  │  GPIO18  │ 12  │ ◄── Connect button here (GPIO17)
+│ 11  │  GPIO17  │  GPIO18  │ 12  │
+│ 13  │  GPIO27  │   GND    │ 14  │
+│ 15  │  GPIO22  │  GPIO23  │ 16  │ ◄── Connect button here (GPIO22)
 │ ... │   ...    │   ...    │ ... │
 └─────┴──────────┴──────────┴─────┘
 
 Button Wiring:
-  Pin 6 (GND) ──┬──[ Button ]──┬── Pin 11 (GPIO17)
+  Pin 6 (GND) ──┬──[ Button ]──┬── Pin 15 (GPIO22)
                 │              │
                 └──────────────┘
                 (Normally Open)
@@ -117,11 +119,11 @@ Button Wiring:
 
 **Connection:**
 - One side of button → Pin 6 (GND)
-- Other side of button → Pin 11 (GPIO17)
+- Other side of button → Pin 15 (GPIO22)
 - Internal pull-down resistor keeps pin LOW when button not pressed
 - Button press connects to GND, creating RISING edge when released
 
-**Note:** Using GPIO17 (Pin 11) avoids conflict with UART which is required by U-Boot and RAUC.
+**Note:** Using GPIO22 (Pin 15) - safe GPIO that doesn't conflict with UART or system functions.
 
 ## Configuration
 
@@ -192,49 +194,70 @@ Or rauc bundle:
 ./bitbake-builds/bitbake-setup-doorphone-distro_poky-altcfg/build/tmp/deploy/images/raspberrypi-armv8/doorphone-bundle-raspberrypi-armv8.raucb
 ```
 
-# Debug / Tuning (optional)
+# Mount rw
+
+``` bash
+mount -o remount,rw /
+```
+
+# Camera settings
+
 ``` bash
 /boot/config.txt
     disable_camera_led=1
-    # U-Boot requires UART
-    enable_uart=1
 
- linphonec -C -d 6 -l /var/log/linphone.log
-    linphone-daemon -C --log /var/log/linphone.log
-    register sip:1104@192.168.0.22 192.168.0.22 1104 1104
-    daemon-linphone>call sip:1102@192.168.0.22
+root@doorphone:~# linphonecsh generic "help camera"
+'camera on'	: allow sending of local camera video to remote end.
+'camera off'	: disable sending of local camera's video to remote end.
 
 
-linphonecsh init -C -d 6 -l /var/log/linphone.log
-linphonecsh register --host 192.168.0.22 --username 1104 --password 1104
-linphonecsh dial 1102
+linphonecsh generic "webcam list"
 
+root@doorphone:~# linphonecsh generic "webcam list"
+0: V4L2: /dev/video0
+1: StaticImage: Static picture
 
-#!/bin/bash
-linphonecsh init
-sleep 4
+root@doorphone:~# linphonecsh generic "webcam use 0"
 
-vi ~/.linphonerc
-vga -> 720p
+```
 
-ec_delay
+## ALSA volume / debug
 
-ec_tail_len
-
-ec_frame_size
-ec on
-
-ec show
-
-ec on 200 150 128
-
-ec
-
+```bash
 arecord -l
 
-arecord -D hw:0,0 -V stereo -r 44100 -f S16_LE -c 2 /dev/null
+linphonecsh generic "soundcard list"
+
+root@doorphone:~# linphonecsh generic "soundcard show"
+Ringer device: ALSA Unknown: USB Audio Device
+Playback device: ALSA Unknown: USB Audio Device
+Capture device: ALSA Unknown: USB Audio Device
+
+# disable onboard soundcard
+/boot/config.txt
+  dtparam=audio=off
+
 
 arecord -D hw:0,0 -V stereo -r 44100 -f S16_LE -c 2 | aplay
+
+speaker-test -t wav -c 2
+
+arecord -D hw:0,0 -f S16_LE -r 48000 -c 1 -d 5 | aplay -D plughw:0,0
+
+This records 5 seconds from USB audio (card 1) and plays it back immediately. Speak into the mic and you should hear yourself.
+
+Or test separately:
+
+bash
+# Record 5 seconds
+arecord -D plughw:0,0 -f S16_LE -r 48000 -c 1 -d 5 /tmp/test.wav
+# Play it back
+aplay -D plughw:0,0 /tmp/test.wav
+
+
+
+
+amixer
 
 alsactl store
 
