@@ -1,0 +1,30 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Yocto Builder <builder@yoctoproject.org>
+Date: Mon, 17 Nov 2025 16:05:00 +0000
+Subject: [PATCH] Change default video size to 720p
+
+Change the default video size from vga (640x480) to 720p (1280x720)
+for better video quality on doorphone application.
+
+Upstream-Status: Inappropriate [configuration]
+
+Signed-off-by: Yocto Builder <builder@yoctoproject.org>
+---
+ coreapi/linphonecore.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/coreapi/linphonecore.c b/coreapi/linphonecore.c
+index 1111111..2222222 100644
+--- a/coreapi/linphonecore.c
++++ b/coreapi/linphonecore.c
+@@ -2327,7 +2327,7 @@ void linphone_core_init(LinphoneCore *lc, LinphoneCoreCbs *cbs, LpConfig *confi
+ 	str = linphone_config_get_string(lc->config, "video", "device", NULL);
+ 	linphone_core_set_video_device(lc, str);
+ 
+-	str = linphone_config_get_string(lc->config, "video", "size", "vga");
++	str = linphone_config_get_string(lc->config, "video", "size", "720p");
+ 	if (str && str[0] != 0) linphone_core_set_preferred_video_definition_by_name(lc, str);
+ 
+ 	str = linphone_config_get_string(lc->config, "video", "preview_size", NULL);
+-- 
+2.34.1

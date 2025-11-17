@@ -4,8 +4,9 @@ LICENSE = "MIT"
 LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/MIT;md5=0835ade698e0bcf8506ecda2f7b4f302"
 
 SRC_URI = "file://doorphone.py \
-           file://doorphone.service \
-           file://linphonerc_config"
+           file://doorphone.service"
+
+S = "${UNPACKDIR}"
 
 RDEPENDS:${PN} = "python3-core linphone linphonec rpi-gpio alsa-utils python3-gpiod belr v4l-utils"
 
@@ -24,8 +25,7 @@ do_install() {
     install -d ${D}${systemd_system_unitdir}
     install -m 0644 ${UNPACKDIR}/doorphone.service ${D}${systemd_system_unitdir}/
     install -d ${D}/var/lib/linphone
-    install -m 0644 ${UNPACKDIR}/linphonerc_config ${D}/var/lib/linphone/.linphonerc
-    
+
     # Create symlink for belr grammars in standard location
     install -d ${D}${datadir}/belr/grammars
     ln -sf /opt/belledonne-communications/share/belr/grammars/sdp_grammar ${D}${datadir}/belr/grammars/sdp_grammar

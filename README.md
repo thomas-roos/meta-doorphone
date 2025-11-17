@@ -1,4 +1,4 @@
-A yocto layer setup to build a sip based doorphone for Rasperry Pi 64 using linphone, usb-soundcard, camera and a button to start the call. Simple, but fully working. Using the new bitbake-setup approach.
+A yocto layer setup to build a sip based doorphone for Rasperry Pi 64 using linphone, usb-soundcard, old (non libcamera ) cam and a button to start the call. Simple, but fully working. Using the new bitbake-setup approach.
 
 ## System Architecture
 
@@ -224,6 +224,15 @@ root@doorphone:~# linphonecsh generic "webcam use 0"
 ## ALSA volume / debug
 
 ```bash
+alsamixer
+
+alsactl store
+```
+
+## ALSA debug
+
+```bash
+
 arecord -l
 
 linphonecsh generic "soundcard list"
@@ -248,18 +257,25 @@ This records 5 seconds from USB audio (card 1) and plays it back immediately. Sp
 
 Or test separately:
 
-bash
 # Record 5 seconds
 arecord -D plughw:0,0 -f S16_LE -r 48000 -c 1 -d 5 /tmp/test.wav
 # Play it back
 aplay -D plughw:0,0 /tmp/test.wav
-
-
-
-
-amixer
-
-alsactl store
-
-alsactl restore
 ```
+
+
+## General debugging
+
+```bash
+journalctl -xefu doorphone
+
+tail -f /var/log/linphone.log
+
+grep "MSV4l2\|video.*size\|vsize" /var/log/linphone.log | tail -30
+```
+
+
+
+## Ideas
+
+- add rpi watchdog
