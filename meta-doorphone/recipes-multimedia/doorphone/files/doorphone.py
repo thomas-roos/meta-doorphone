@@ -2,11 +2,19 @@
 
 import gpiod
 import os
+import re
+import subprocess
 import time
+
+# The PBX moved from the dev PC (mother, 192.168.0.22, Asterisk 18) to the
+# Raspberry Pi that also runs Home Assistant (192.168.0.192, Asterisk 22).
+PBX_HOST = "192.168.0.192"
+SIP_USER = "1104"
+SIP_PASS = "1104"
 
 def button_callback():
     print("Button was pushed!")
-    os.system("linphonecsh dial sip:1234@192.168.0.22")
+    os.system(f"linphonecsh dial sip:1234@{PBX_HOST}")
 
 print("Starting linphonecsh daemon...")
 os.system("linphonecsh init -V -d 6 -l /var/log/linphone.log")
@@ -16,8 +24,43 @@ print("Configuring network...")
 os.system('linphonecsh generic "ipv6 disable"')
 
 print("Configuring codecs...")
-os.system('linphonecsh generic "codec disable all"')
-os.system('linphonecsh generic "codec enable opus"')
+# G.722 rather than opus: the Pi's Asterisk 22 ships res_format_attr_opus (so it
+# can pass opus through) but NOT codec_opus, so it cannot transcode opus. Home
+# Assistant's SIP client (hass-sip) speaks only PCMU/PCMA/G.722, so an
+# opus-only doorphone leg has no common codec with it and no way to bridge.
+# G.722 is wideband, Asterisk has codec_g722, and every leg can use it.
+# ("codec" is the audio list in linphonec; video codecs are "vcodec" and are
+# unaffected, so the VP8 camera stream still works.)
+#
+# NOTE linphonec's "codec enable" takes an INDEX, not a name - "codec enable
+# g722" (or "opus") is silently ignored, which is why this used to run on opus
+# regardless of what the script said. Look the indices up at runtime instead of
+# hardcoding them, since they shift with the built-in codec list.
+WANTED_CODECS = ("G722", "PCMU", "PCMA")   # first one wins during negotiation
+
+
+def configure_codecs():
+    os.system('linphonecsh generic "codec disable all"')
+    listing = subprocess.run(
+        ["linphonecsh", "generic", "codec list"],
+        capture_output=True, text=True, timeout=15,
+    ).stdout
+    # lines look like:  " 6: G722 (8000) disabled"
+    by_name = {}
+    for line in listing.splitlines():
+        m = re.match(r"\s*(\d+):\s+(\S+)\s", line)
+        if m:
+            by_name.setdefault(m.group(2).upper(), m.group(1))
+    for name in WANTED_CODECS:
+        idx = by_name.get(name)
+        if idx is None:
+            print(f"  codec {name} not offered by this linphone build, skipping")
+            continue
+        os.system(f'linphonecsh generic "codec enable {idx}"')
+        print(f"  enabled {name} (index {idx})")
+
+
+configure_codecs()
 
 print("Configuring audio...")
 os.system('linphonecsh generic "soundcard use 0"')
@@ -31,7 +74,7 @@ os.system('linphonecsh generic "camera on"')
 os.system('linphonecsh generic "pwindow hide"')
 
 print("Registering SIP account...")
-os.system("linphonecsh register --host 192.168.0.22 --username 1104 --password 1104")
+os.system(f"linphonecsh register --host {PBX_HOST} --username {SIP_USER} --password {SIP_PASS}")
 time.sleep(2)
 os.system("linphonecsh status register")
 
