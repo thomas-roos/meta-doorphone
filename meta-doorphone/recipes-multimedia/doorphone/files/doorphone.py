@@ -30,11 +30,19 @@ print("Configuring network...")
 os.system('linphonecsh generic "ipv6 disable"')
 
 print("Configuring codecs...")
-# G.722 rather than opus: the Pi's Asterisk 22 ships res_format_attr_opus (so it
-# can pass opus through) but NOT codec_opus, so it cannot transcode opus. Home
-# Assistant's SIP client (hass-sip) speaks only PCMU/PCMA/G.722, so an
-# opus-only doorphone leg has no common codec with it and no way to bridge.
-# G.722 is wideband, Asterisk has codec_g722, and every leg can use it.
+# G.722 everywhere, by policy - one wideband codec for every client, so
+# negotiation is deterministic and nothing depends on who answers first.
+#
+# G.722 rather than opus specifically because Home Assistant's SIP client
+# (hass-sip) speaks only PCMU/PCMA/G.722, and Asterisk cannot bridge it to an
+# opus-only leg: 22.8.2 ships no codec_opus at all (--with-opus only gates
+# res_format_attr_opus for pass-through), so there is no transcoder. HA carries
+# no audio - the Pi has no microphone or speaker - but it must still be able to
+# negotiate *something* to accept the INVITE, or the leg goes straight to Down
+# and no sip_incoming_call event fires. Measured: opus-only gave "format
+# (opus|vp8)" and no notification; G.722 gave "(g722|vp8)" and Ringing.
+#
+# PCMU/PCMA are kept only as fallbacks for anything that cannot do G.722.
 # ("codec" is the audio list in linphonec; video codecs are "vcodec" and are
 # unaffected, so the VP8 camera stream still works.)
 #
@@ -42,7 +50,7 @@ print("Configuring codecs...")
 # g722" (or "opus") is silently ignored, which is why this used to run on opus
 # regardless of what the script said. Look the indices up at runtime instead of
 # hardcoding them, since they shift with the built-in codec list.
-WANTED_CODECS = ("G722", "PCMU", "PCMA")   # first one wins during negotiation
+WANTED_CODECS = ("G722", "PCMU", "PCMA")
 
 
 def configure_codecs():
