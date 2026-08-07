@@ -6,9 +6,15 @@ import re
 import subprocess
 import time
 
-# The PBX moved from the dev PC (mother, 192.168.0.22, Asterisk 18) to the
-# Raspberry Pi that also runs Home Assistant (192.168.0.192, Asterisk 22).
-PBX_HOST = "192.168.0.192"
+# The PBX moved from the dev PC (mother, Asterisk 18) to the Raspberry Pi that
+# also runs Home Assistant (Asterisk 22).
+#
+# Use the Fritz!Box hostname rather than a literal address: the Pi's wired
+# interface is on DHCP (systemd-networkd's stock 80-wired.network, no static
+# config anywhere), so 192.168.0.192 is only a lease and could change. The
+# Fritz!Box registers "ha.fritz.box" for it and is also the doorphone's DNS
+# server, so the name always tracks the lease.
+PBX_HOST = "ha.fritz.box"
 SIP_USER = "1104"
 SIP_PASS = "1104"
 
