@@ -6,11 +6,11 @@
             "git-remote": {
                 "remotes": {
                     "origin": {
-                        "uri": "file:///home/ubuntu/data/meta-doorphone/bitbake"
+                        "uri": "https://git.openembedded.org/bitbake"
                     }
                 },
                 "branch": "master",
-                "rev": "master"
+                "rev": "a9173b9d57f09d86ae24b605958b6acf4815f4ad"
             },
             "path": "bitbake"
         },
@@ -18,11 +18,11 @@
             "git-remote": {
                 "remotes": {
                     "origin": {
-                        "uri": "git://git.openembedded.org/openembedded-core;protocol=https"
+                        "uri": "https://git.openembedded.org/openembedded-core"
                     }
                 },
                 "branch": "master",
-                "rev": "478a645bad150f04dee1b0085c4542c2eefe7007"
+                "rev": "6f7a806ece411ab32e4b1c08a0299400bdf3b588"
             },
             "path": "openembedded-core"
         },
@@ -30,11 +30,11 @@
             "git-remote": {
                 "remotes": {
                     "origin": {
-                        "uri": "git://git.yoctoproject.org/meta-yocto;protocol=https"
+                        "uri": "https://git.yoctoproject.org/meta-yocto"
                     }
                 },
                 "branch": "master",
-                "rev": "66ea31cee15309af07afeee8dec8a6fe1d92d28e"
+                "rev": "30756f716a1f527a74a9e12bad8f6e0e756ed9a4"
             },
             "path": "meta-yocto"
         },
@@ -42,11 +42,11 @@
             "git-remote": {
                 "remotes": {
                     "origin": {
-                        "uri": "git://git.openembedded.org/meta-openembedded;protocol=https"
+                        "uri": "https://git.openembedded.org/meta-openembedded"
                     }
                 },
                 "branch": "master",
-                "rev": "945ef788cf2fa31fb71492295653d4383eacfaf3"
+                "rev": "6f59e8f70758323fbdcc3468c94a6508b9ac5af7"
             },
             "path": "meta-openembedded"
         },
@@ -58,7 +58,7 @@
                     }
                 },
                 "branch": "master",
-                "rev": "11266f6fa350133704da2f1d7380ab4241cd8fea"
+                "rev": "352f4d3cf33c3f3540ab044955b88efec73dbc49"
             },
             "path": "meta-rauc"
         },
@@ -70,7 +70,7 @@
                     }
                 },
                 "branch": "master",
-                "rev": "fc5ff414b9b505b2693e9f154c8a4dff3e018a8f"
+                "rev": "00228100ab6dfb4ea53514c15cba02c0d2fa985e"
             },
             "path": "meta-rauc-community"
         },
@@ -78,11 +78,11 @@
             "git-remote": {
                 "remotes": {
                     "origin": {
-                        "uri": "git://git.yoctoproject.org/meta-raspberrypi;protocol=https"
+                        "uri": "https://git.yoctoproject.org/meta-raspberrypi"
                     }
                 },
                 "branch": "master",
-                "rev": "161be949b9f54484f30e3da26f8ef166ae0f2056"
+                "rev": "a89c5fdff9ab6031c94afaf16c915d18baad908f"
             },
             "path": "meta-raspberrypi"
         },
@@ -94,7 +94,7 @@
                     }
                 },
                 "branch": "master",
-                "rev": "master"
+                "rev": "b78bff5d1d1012f0ae64ee36c8e15263be27c521"
             },
             "path": "meta-bc"
         },
@@ -106,7 +106,7 @@
                     }
                 },
                 "branch": "master",
-                "rev": "master"
+                "rev": "b17b50438ba193e5af2cad1262a97bb2bee7fd8b"
             },
             "path": "meta-aws"
         }
