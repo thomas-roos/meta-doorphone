@@ -1,0 +1,79 @@
+Upstream-Status: Pending
+
+Subject: [PATCH 2/2] Use pkgconfig to find libxml2
+Organization: O.S. Systems Software LTDA.
+
+Signed-off-by: Fabio Berton <fabio.berton@ossystems.com.br>
+---
+ configure.ac            | 12 +-----------
+ menuselect/configure.ac | 11 +++--------
+ 2 files changed, 4 insertions(+), 19 deletions(-)
+
+Index: git/configure.ac
+===================================================================
+--- git.orig/configure.ac
++++ git/configure.ac
+@@ -741,18 +741,6 @@ fi
+ # See if clock_gettime is in librt
+ AST_EXT_LIB_CHECK([RT], [rt], [clock_gettime], [])
+ 
+-AST_PKG_CONFIG_CHECK([LIBXML2], [libxml-2.0])
+-AST_EXT_TOOL_CHECK([LIBXML2], [xml2-config], , ,
+-        [#include <libxml/tree.h>
+-        #include <libxml/parser.h>],
+-        [LIBXML_TEST_VERSION])
+-
+-if test "${PBX_LIBXML2}" != 1; then
+-	AC_MSG_NOTICE(*** The Asterisk menuselect tool requires the 'libxml2' development package.)
+-	AC_MSG_NOTICE(*** Please install the 'libxml2' development package.)
+-	exit 1
+-fi
+-
+ AST_EXT_LIB_CHECK([URIPARSER], [uriparser], [uriParseUriA], [uriparser/Uri.h])
+ 
+ # Another mandatory item (unless it's explicitly disabled)
+@@ -1616,6 +1604,7 @@ fi
+ 
+ 
+ # do the package library checks now
++AST_PKG_CONFIG_CHECK([LIBXML2], [libxml-2.0])
+ 
+ AST_EXT_LIB_CHECK([ALSA], [asound], [snd_pcm_open], [alsa/asoundlib.h])
+ 
+Index: git/menuselect/configure.ac
+===================================================================
+--- git.orig/menuselect/configure.ac
++++ git/menuselect/configure.ac
+@@ -43,6 +43,7 @@ AH_BOTTOM([#endif])
+ 
+ # Checks for programs.
+ AC_PROG_CC
++AC_PROG_SED
+ AST_CHECK_GNU_MAKE
+ 
+ PKG_PROG_PKG_CONFIG
+@@ -91,21 +92,14 @@ else
+   AST_EXT_LIB_CHECK([TINFO], [tinfo], [keypad], [curses.h])
+ fi
+ 
+-AST_PKG_CONFIG_CHECK([LIBXML2], [libxml-2.0])
+-AST_EXT_TOOL_CHECK([LIBXML2], [xml2-config], , ,
+-        [#include <libxml/tree.h>
+-        #include <libxml/parser.h>],
+-        [LIBXML_TEST_VERSION])
+-
+-if test "${PBX_LIBXML2}" != 1; then
+-  AC_MSG_ERROR([Could not find required 'Libxml2' development package])
+-fi
+-
+ AST_PKG_CONFIG_CHECK([GTK2], [gtk+-2.0])
+ AC_SUBST(PBX_GTK2)
+ AC_SUBST(GTK2_INCLUDE)
+ AC_SUBST(GTK2_LIB)
+ 
++PKG_PROG_PKG_CONFIG()
++AST_PKG_CONFIG_CHECK([LIBXML2], [libxml-2.0])
++
+ test "$silent"=yes && ac_sub_configure_args="${ac_sub_configure_args} --silent"
+ 
+ AC_CONFIG_FILES([makeopts])

@@ -1,0 +1,17 @@
+Upstream-Status: Pending
+
+Index: git/libjwt/CMakeLists.txt
+===================================================================
+--- git.orig/libjwt/CMakeLists.txt
++++ git/libjwt/CMakeLists.txt
+@@ -66,6 +66,10 @@ list (REMOVE_ITEM SOURCE_FILES ${FILES_T
+ 
+ add_library (${TARGET_NAME} ${LIBRARY_TYPE} ${SOURCE_FILES})
+ 
++set_target_properties(${TARGET_NAME} PROPERTIES
++  VERSION 2.10.0
++  SOVERSION 2)
++
+ target_include_directories (${TARGET_NAME} PRIVATE
+ 	${SSL_LIBRARY_INCLUDE_DIR}
+        ${jansson_SOURCE_DIR}/src
