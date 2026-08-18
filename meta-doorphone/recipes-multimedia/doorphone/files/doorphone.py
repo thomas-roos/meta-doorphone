@@ -23,7 +23,26 @@ def button_callback():
     os.system(f"linphonecsh dial sip:1234@{PBX_HOST}")
 
 print("Starting linphonecsh daemon...")
-os.system("linphonecsh init -V -d 6 -l /var/log/linphone.log")
+# linphonecsh defaults to "-c /dev/null" when it is not given a config file, and
+# liblinphone saves its config by writing a temp file and renaming it over that
+# path - which REPLACES the /dev/null device node with a regular 0600 file. The
+# whole system then degrades quietly: non-root writes to /dev/null fail with
+# EACCES, root's writes accumulate in devtmpfs (RAM), and readers of /dev/null
+# get linphone's settings back. That is how systemd-tmpfiles came to log
+# "Unknown modifiers in command: playback_dev_id=ALSA" while parsing
+# /etc/tmpfiles.d/etc.conf, which is a symlink to /dev/null.
+#
+# Give it a real writable file. /var/volatile is the image's tmpfs, so the config
+# is still thrown away on reboot - nothing here depends on it, since every
+# setting is applied explicitly below - but no device node gets destroyed.
+# NOTE linphonec refuses to start if the config file does not already exist - it
+# exits silently and every later linphonecsh call then fails with "Failed to
+# connect pipe", leaving the daemon down and the codec list empty. Creating the
+# directory is not enough; the file itself has to be there.
+LINPHONE_CONFIG = "/var/volatile/linphone/linphonerc"
+os.makedirs(os.path.dirname(LINPHONE_CONFIG), exist_ok=True)
+open(LINPHONE_CONFIG, "a").close()
+os.system(f"linphonecsh init -c {LINPHONE_CONFIG} -V -d 6 -l /var/log/linphone.log")
 time.sleep(2)
 
 print("Configuring network...")

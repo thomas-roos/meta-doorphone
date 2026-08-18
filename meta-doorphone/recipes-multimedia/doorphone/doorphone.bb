@@ -8,7 +8,14 @@ SRC_URI = "file://doorphone.py \
 
 S = "${UNPACKDIR}"
 
-RDEPENDS:${PN} = "python3-core linphone linphonec rpi-gpio alsa-utils python3-gpiod belr v4l-utils"
+# belle-sip ships /usr/share/belr/grammars/sdp_grammar, which belle-sip loads at
+# runtime to parse SDP. This used to be satisfied by symlinks into
+# /opt/belledonne-communications (linphone-sdk's INSTALL_PATH) created right here
+# in do_install, but linphone-sdk no longer builds at all - it DEPENDS on
+# yasm-native, which oe-core has dropped - so those symlinks dangled and
+# linphonec aborted the moment a call was answered. Depend on the real files
+# instead; recipes-bc/belle-sip moves them out of belle-sip's -dev package.
+RDEPENDS:${PN} = "python3-core linphone linphonec rpi-gpio alsa-utils python3-gpiod belr belle-sip v4l-utils"
 
 DEPENDS = "alsa-utils \
            htop \
@@ -25,14 +32,6 @@ do_install() {
     install -d ${D}${systemd_system_unitdir}
     install -m 0644 ${UNPACKDIR}/doorphone.service ${D}${systemd_system_unitdir}/
     install -d ${D}/var/lib/linphone
-
-    # Create symlink for belr grammars in standard location
-    install -d ${D}${datadir}/belr/grammars
-    ln -sf /opt/belledonne-communications/share/belr/grammars/sdp_grammar ${D}${datadir}/belr/grammars/sdp_grammar
-    ln -sf /opt/belledonne-communications/share/belr/grammars/vcard_grammar ${D}${datadir}/belr/grammars/vcard_grammar
-    ln -sf /opt/belledonne-communications/share/belr/grammars/cpim_grammar ${D}${datadir}/belr/grammars/cpim_grammar
-    ln -sf /opt/belledonne-communications/share/belr/grammars/identity_grammar ${D}${datadir}/belr/grammars/identity_grammar
-    ln -sf /opt/belledonne-communications/share/belr/grammars/ics_grammar ${D}${datadir}/belr/grammars/ics_grammar
 }
 
 FILES:${PN} = "/*"
